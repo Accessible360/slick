@@ -29,6 +29,15 @@
 }(function($) {
     'use strict';
     var Slick = window.Slick || {};
+    var translations = {
+        gotoslide: 'Go to slide',
+        next: 'Next',
+        pause: 'Pause',
+        play: 'Play',
+        previous: 'Previous',
+        slide: 'slide',
+        isSet: false
+    };
 
     Slick = (function() {
 
@@ -37,6 +46,10 @@
         function Slick(element, settings) {
 
             var _ = this, dataSettings;
+
+            if (!translations.isSet && typeof settings.translations !== 'undefined' && typeof settings.translations === 'object') {
+                translations = $.extend({}, translations, settings.translations, {isSet: true});
+            }
 
             _.defaults = {
                 adaptiveHeight: false,
@@ -47,11 +60,11 @@
                 asNavFor: null,
                 prevArrow: '<button class="slick-prev" type="button">'
                             + '<span class="slick-prev-icon" aria-hidden="true"></span>'
-                            + '<span class="slick-sr-only">Previous</span>'
+                            + '<span class="slick-sr-only">' + translations.previous + '</span>'
                          + '</button>',
                 nextArrow: '<button class="slick-next" type="button">'
                             + '<span class="slick-next-icon" aria-hidden="true"></span>'
-                            + '<span class="slick-sr-only">Next</span>'
+                            + '<span class="slick-sr-only">' + translations.next + '</span>'
                          + '</button>',
                 autoplay: false,
                 autoplaySpeed: 3000,
@@ -61,7 +74,7 @@
                 customPaging: function(slider, i) {
                     return $('<button type="button">'
                                 + '<span class="slick-dot-icon" aria-hidden="true"></span>'
-                                + '<span class="slick-sr-only">Go to slide ' + (i+1) + '</span>'
+                                + '<span class="slick-sr-only">' + translations.gotoslide + ' ' + (i+1) + '</span>'
                             + '</button>');
                 },
                 dots: false,
@@ -498,7 +511,6 @@
                     if(_.options.arrowsPlacement != null) {
                         switch(_.options.arrowsPlacement) {
                             case 'beforeSlides':
-                                console.log('test2');
                                 _.$prevArrow.after(_.$nextArrow);
                                 break;
 
@@ -520,7 +532,6 @@
             } else {
 
                 _.$prevArrow.add( _.$nextArrow )
-
                     .addClass('slick-hidden')
                     .prop('disabled', true);
             }
@@ -571,7 +582,7 @@
             if(_.options.useGroupRole) {
                 $(element)
                     .attr('role', 'group')
-                    .attr('aria-label', 'slide ' + (index + 1));
+                    .attr('aria-label', translations.slide + ' ' + (index + 1));
             }
         });
 
@@ -616,8 +627,8 @@
             _.$pauseButton = $('<button type="button" class="slick-autoplay-toggle-button">');
             _.$pauseButton.append(_.$pauseIcon);
             _.$pauseButton.append(_.$playIcon.css('display', 'none'));
-            _.$pauseButton.append($('<span class="slick-pause-text slick-sr-only">Pause</span>'));
-            _.$pauseButton.append($('<span class="slick-play-text slick-sr-only" style="display: none">Play</span>'));
+            _.$pauseButton.append($('<span class="slick-pause-text slick-sr-only">' + translations.pause + '</span>'));
+            _.$pauseButton.append($('<span class="slick-play-text slick-sr-only" style="display: none">' + translations.play + '</span>'));
 
             _.$pauseButton.prependTo(_.$slider);
         }
@@ -1388,7 +1399,7 @@
         _.updateSlideVisibility();
 
         if(_.options.accessibility != undefined) {
-            console.warn('accessibility setting is no longer supported.')
+            console.warn('accessibility setting is no longer supported.');
         }
 
         if(_.options.focusOnChange != undefined) {
