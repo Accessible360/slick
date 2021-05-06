@@ -1857,7 +1857,7 @@
         var _ = this, breakpoint, currentBreakpoint, l,
             responsiveSettings = _.options.responsive || null;
 
-        if ( $.type(responsiveSettings) === 'array' && responsiveSettings.length ) {
+        if (_.getConstructorName(responsiveSettings) === 'Array' && responsiveSettings.length) {
 
             _.respondTo = _.options.respondTo || 'window';
 
@@ -2117,19 +2117,19 @@
 
         var _ = this, l, item, option, value, refresh = false, type;
 
-        if( $.type( arguments[0] ) === 'object' ) {
+        if (_.getConstructorName(arguments[0]) === 'Object') {
 
             option =  arguments[0];
             refresh = arguments[1];
             type = 'multiple';
 
-        } else if ( $.type( arguments[0] ) === 'string' ) {
+        } else if (_.getConstructorName(arguments[0]) === 'String') {
 
             option =  arguments[0];
             value = arguments[1];
             refresh = arguments[2];
 
-            if ( arguments[0] === 'responsive' && $.type( arguments[1] ) === 'array' ) {
+            if (arguments[0] === 'responsive' && _.getConstructorName(arguments[1]) === 'Array') {
 
                 type = 'responsive';
 
@@ -2159,7 +2159,7 @@
 
             for ( item in value ) {
 
-                if( $.type( _.options.responsive ) !== 'array' ) {
+                if (_.getConstructorName(_.options.responsive) !== 'Array') {
 
                     _.options.responsive = [ value[item] ];
 
@@ -3017,6 +3017,13 @@
         }
 
     };
+
+    Slick.prototype.getConstructorName = function () {
+        var str = (this.prototype ? this.prototype.constructor : this.constructor).toString();
+        var cname = str.match(/function\s(\w*)/)[1];
+        var aliases = ["", "anonymous", "Anonymous"];
+        return aliases.indexOf(cname) > -1 ? "Function" : cname;
+    }
 
     $.fn.slick = function() {
         var _ = this,
