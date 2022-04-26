@@ -45,11 +45,11 @@
                 arrows: true,
                 arrowsPlacement: null,
                 asNavFor: null,
-                prevArrow: '<button class="slick-prev" type="button">'
+                prevArrow: '<button class="slick-prev" type="button" aria-label="Reveal previous slide">'
                             + '<span class="slick-prev-icon" aria-hidden="true"></span>'
                             + '<span class="slick-sr-only">Previous</span>'
                          + '</button>',
-                nextArrow: '<button class="slick-next" type="button">'
+                nextArrow: '<button class="slick-next" type="button" aria-label="Reveal next slide">'
                             + '<span class="slick-next-icon" aria-hidden="true"></span>'
                             + '<span class="slick-sr-only">Next</span>'
                          + '</button>',
@@ -59,7 +59,7 @@
                 centerPadding: '50px',
                 cssEase: 'ease',
                 customPaging: function(slider, i) {
-                    return $('<button type="button">'
+                    return $('<button type="button"aria-label= "Reveal slide '+(e+1)+'">'
                                 + '<span class="slick-dot-icon" aria-hidden="true"></span>'
                                 + '<span class="slick-sr-only">Go to slide ' + (i+1) + '</span>'
                             + '</button>');
