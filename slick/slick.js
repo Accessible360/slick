@@ -58,6 +58,9 @@
                 centerMode: false,
                 centerPadding: '50px',
                 cssEase: 'ease',
+                customItemLabel: function (slider, i) {
+                    return 'slide ' + (i + 1);
+                },
                 customPaging: function(slider, i) {
                     return $('<button type="button">'
                                 + '<span class="slick-dot-icon" aria-hidden="true"></span>'
@@ -206,6 +209,25 @@
 
     }());
 
+    Slick.prototype.setItemAccessibility = function(itemElement, itemIndex) {
+        var _ = this;
+        var $element = $(itemElement);
+
+        // @todo Should useGroupRole control the aria-label?
+        if (_.options.useGroupRole) {
+            // Set the group role.
+            $element.attr('role', 'group');
+
+            // Set the label if slick has set it OR there is no aria-label
+            // defined yet in the original markup.
+            if ($element.data('slickAriaLabeled') === true ||
+                (!$element.is('[aria-label]') && !$element.is('[aria-labelledby]'))) {
+                $element.data('slickAriaLabeled', true);
+                $element.attr('aria-label', _.options.customItemLabel.call(_, _, itemIndex));
+            }
+        }
+    };
+
     Slick.prototype.addSlide = Slick.prototype.slickAdd = function(markup, index, addBefore) {
 
         var _ = this;
@@ -243,8 +265,7 @@
 
         _.$slides.each(function(index, element) {
             $(element).attr('data-slick-index', index);
-            $(element).attr('role', 'group');
-            $(element).attr('aria-label', 'slide ' + index);
+            _.setItemAccessibility(element, index);
         });
 
         _.$slidesCache = _.$slides;
@@ -568,19 +589,21 @@
                 .attr('data-slick-index', index)
                 .data('originalStyling', $(element).attr('style') || '');
 
-            if(_.options.useGroupRole) {
-                $(element)
-                    .attr('role', 'group')
-                    .attr('aria-label', 'slide ' + (index + 1));
-            }
+            _.setItemAccessibility(element, index);
         });
 
         _.$slider.addClass('slick-slider');
         _.$slider.addClass('accessible-slick')
 
         _.$slider.attr('role', 'region');
-        _.$slider.attr('aria-label', _.options.regionLabel);
         _.$slider.attr('tabindex', -1);
+        // Set the label if slick has set it OR there is no aria-label
+        // defined yet in the original markup.
+        if (_.$slider.data('slickAriaLabeled') === true ||
+            (!_.$slider.is('[aria-label]') && !_.$slider.is('[aria-labelledby]'))) {
+            _.$slider.data('slickAriaLabeled', true);
+            _.$slider.attr('aria-label', _.options.regionLabel);
+        }
 
         _.$slideTrack = (_.slideCount === 0) ?
             $('<div class="slick-track"/>').appendTo(_.$slider) :
