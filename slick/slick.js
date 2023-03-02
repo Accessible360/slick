@@ -3011,7 +3011,7 @@
             .find('.slick-active')
                 .removeAttr('aria-hidden')
                 .find('a, input, button, select')
-                    .removeAttr('tabindex');
+                    .attr('tabindex', '0');
     }
 
     Slick.prototype.visibility = function() {
