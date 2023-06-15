@@ -976,7 +976,9 @@
         _.$slider.removeClass('slick-slider');
         _.$slider.removeClass('slick-initialized');
         _.$slider.removeClass('slick-dotted');
-        _.$slider.removeClass('accessible-slick')
+        _.$slider.removeClass('accessible-slick');
+        _.$slider.removeAttr("role");
+        _.$slider.removeAttr("aria-label");
 
         _.unslicked = true;
 
