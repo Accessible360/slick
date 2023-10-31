@@ -162,6 +162,8 @@ focusOnSelect | Unnecessary since keyboard navigation has been removed. Even wit
 ## Development
 If you'd like to contribute changes or just make modifications for your own use, use the following process:
 
+Tooling requires, at latest, Python2 and Node 14.
+
 1. Install all the dev dependencies with NPM:
 
 ```sh
