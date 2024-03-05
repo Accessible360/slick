@@ -1,6 +1,23 @@
 accessible-slick
 ----------------
 
+## Web note:
+
+As seen in [WEBPLT-9816](https://jira.mercatus.com/browse/WEBPLT-9816) - event listeners are being removed by the **Slick.prototype.cleanUpRows** function on breakpoints. As such, the function has been changed to the code below as described in [this StackOverflow thread](https://stackoverflow.com/questions/38183104/how-to-prevent-slick-plugin-from-removing-event-listeners)
+
+```JavaScript
+Slick.prototype.cleanUpRows = function() {
+    var _ = this, originalSlides;
+
+    if(_.options.rows > 0) {
+        originalSlides = _.$slides.children().children().clone(true);
+        originalSlides.removeAttr('style');
+        _.$slider.get(0).innerHTML = '';
+        _.$slider.append(originalSlides);
+    }
+};
+```
+
 _the last (accessible) carousel you'll ever need_
 
 A highly accessible, WCAG 2.0 / 2.1 compliant, drop-in replacement for Slick Slider (1.8.1) intended to make life easier for real-world dev teams who need to pass accessibility audits.
