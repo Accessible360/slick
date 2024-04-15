@@ -2551,7 +2551,12 @@
 
         _.animating = true;
 
-        _.$slider.trigger('beforeChange', [_, _.currentSlide, animSlide]);
+        let beforeChangeEvent = $.Event("beforeChange");
+        _.$slider.trigger(beforeChangeEvent, [_, _.currentSlide, animSlide]);
+        if (beforeChangeEvent.isDefaultPrevented()) {
+            _.animating = false;
+            return;
+        }
 
         oldSlide = _.currentSlide;
         _.currentSlide = animSlide;
